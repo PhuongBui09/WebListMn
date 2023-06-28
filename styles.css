@@ -23,3 +23,35 @@ li {
 #totalPrice {
   font-weight: bold;
 }
+
+.cangiua {
+  text-align: center;
+}
+
+.form-sanpham {
+  
+}
+
+.font-size20 {
+  font-size: 20px;
+}
+
+.product-class {
+  color: red;
+  /* margin-right: 41%;
+  padding: 2px 30px;
+  border: 1px solid; */
+}
+
+.price-class {
+  color: blue;
+  /* margin-right: 9%;
+  padding: 2px 30px;
+  border: 1px solid; */
+}
+
+.li-render-addproduct {
+  border: 1px solid;
+  width: 40%;
+  margin-left: 30%;
+}

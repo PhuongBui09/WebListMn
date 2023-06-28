@@ -7,19 +7,26 @@
   <body>
     <h1>Shopping List</h1>
 
-    <form id="form">
+    <form id="form" class="form-sanpham cangiua">
+    <form id="form" cla>
       <input
         type="text"
         id="productInput"
         placeholder="Tên sản phẩm"
         autocomplete="off"
         required
+        class="font-size20"
       />
-      <input type="number" id="priceInput" placeholder="Tiền" required />
-      <button type="submit">Thêm</button>
+      <input type="number" 
+        id="priceInput" 
+        placeholder="Tiền" 
+        required
+        class="font-size20"
+      />
+      <button type="submit" class="font-size20">Thêm</button>
     </form>
 
-    <ul id="list"></ul>
+    <ul id="list" class="cangiua"></ul>
 
     <p id="totalPrice">Tổng tiền: $0</p>
 
@@ -27,4 +34,3 @@
   </body>
 </html>
 
-khangdz

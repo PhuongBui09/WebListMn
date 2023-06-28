@@ -23,8 +23,18 @@ function renderList() {
 
   shoppingList.forEach((item, index) => {
     const li = document.createElement("li");
-    li.textContent = `${item.product} - $${item.price}`;
 
+    const productSpan = document.createElement("span");
+    productSpan.textContent = item.product;
+    productSpan.classList.add('product-class'); 
+    li.appendChild(productSpan);
+
+    const priceSpan = document.createElement("span");
+    priceSpan.textContent = `${item.price}`;
+    priceSpan.classList.add('price-class'); 
+    li.appendChild(priceSpan);
+
+    li.classList.add('li-render-addproduct');
     totalPrice += item.price;
 
     // Add delete button for each item
@@ -37,6 +47,7 @@ function renderList() {
 
     list.appendChild(li);
   });
+
 
   const totalPriceElement = document.getElementById("totalPrice");
   totalPriceElement.textContent = `Tổng tiền: $${totalPrice}`;
