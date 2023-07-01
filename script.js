@@ -11,6 +11,8 @@ function deleteItem(index) {
 
   if (deletedItem.product === "Đang nợ") {
     debtAmount -= deletedItem.price;
+  } else {
+    totalPrice -= deletedItem.price;
   }
 
   shoppingList.splice(index, 1);
@@ -21,38 +23,8 @@ function deleteItem(index) {
 function deleteAll() {
   shoppingList.length = 0;
   debtAmount = 0;
+  totalPrice = 0;
   renderList();
-}
-
-// Function to group products by date
-function groupProductsByDate(list) {
-  const productsByDate = {};
-  list.forEach((item) => {
-    const { product, price, date } = item;
-    const formattedDate = new Date(date).toLocaleDateString("vi-VN");
-    if (!productsByDate[formattedDate]) {
-      productsByDate[formattedDate] = [];
-    }
-    productsByDate[formattedDate].push({ product, price, date }); // Thêm date vào để sử dụng sau này
-  });
-  return productsByDate;
-}
-
-// Function to calculate total amount
-function calculateTotalAmount() {
-  let totalPrice = 0;
-  let debtAmount = 0;
-
-  shoppingList.forEach((item) => {
-    const { product, price } = item;
-    if (product === "Đang nợ") {
-      debtAmount += price;
-    } else {
-      totalPrice += price;
-    }
-  });
-
-  return totalPrice - debtAmount;
 }
 
 // Render shopping list
@@ -60,18 +32,38 @@ function renderList() {
   const list = document.getElementById("list");
   list.innerHTML = "";
 
-  // Group products by date
-  const productsByDate = groupProductsByDate(shoppingList);
+  let totalPrice = 0;
 
+  // Create an object to store products grouped by date
+  const productsByDate = {};
+
+  shoppingList.forEach((item) => {
+    const { product, price, date } = item;
+
+    // Format date to "Ngày DD/MM/YYYY"
+    const formattedDate = new Date(date).toLocaleDateString("vi-VN");
+
+    // Group products by date
+    if (productsByDate[formattedDate]) {
+      productsByDate[formattedDate].push({ product, price });
+    } else {
+      productsByDate[formattedDate] = [{ product, price }];
+    }
+
+    if (product !== "Đang nợ") {
+      totalPrice += price;
+    }
+  });
+
+  // Loop through products grouped by date and display them on the page
   for (const date in productsByDate) {
     const productList = productsByDate[date];
 
     const dateHeader = document.createElement("h3");
-    const formattedDate = new Date(date).toLocaleDateString("vi-VN");
-    dateHeader.textContent = formattedDate; // Hiển thị ngày dưới định dạng "DD/MM/YYYY"
+    dateHeader.textContent = date;
     list.appendChild(dateHeader);
 
-    productList.forEach((item, index) => {
+    productList.forEach((item) => {
       const li = document.createElement("li");
       const productText = document.createElement("span");
       const productName = item.product.trim();
@@ -91,6 +83,17 @@ function renderList() {
       priceText.textContent = ` + ${price}`;
       li.appendChild(priceText);
 
+      if (productName === "Đang nợ") {
+        // Check if "Đang nợ" already exists in the list
+        if (debtAmount !== 0) {
+          // If it exists, add the current debt amount to the new amount
+          debtAmount += item.price;
+        } else {
+          // If it doesn't exist, set the debt amount
+          debtAmount = item.price;
+        }
+      }
+
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Xoá";
       deleteButton.classList.add("delete-button");
@@ -104,7 +107,7 @@ function renderList() {
   }
 
   const totalPriceElement = document.getElementById("totalPrice");
-  const totalAmount = calculateTotalAmount();
+  const totalAmount = totalPrice - debtAmount;
   const formattedTotalAmount = totalAmount.toLocaleString("vi-VN", {
     style: "currency",
     currency: "VND",
@@ -139,8 +142,8 @@ form.addEventListener("submit", (event) => {
       debtAmount += price;
     }
 
-    const date = new Date().toISOString(); // Lấy ngày nhập hiện tại
-    shoppingList.push({ product, price, date }); // Thêm ngày vào danh sách sản phẩm
+    const currentDate = new Date().toISOString().slice(0, 10);
+    shoppingList.push({ product, price, date: currentDate });
 
     productInput.value = "";
     priceInput.value = "";
