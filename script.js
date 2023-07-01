@@ -49,7 +49,7 @@ function renderList() {
             style: "currency",
             currency: "VND",
         });
-        priceText.textContent = ` - ${price}`;
+        priceText.textContent = ` + ${price}`;
         li.appendChild(priceText);
 
         if (productName === "Đang nợ") {
