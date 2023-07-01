@@ -149,7 +149,3 @@ li {
 .form-row button:hover {
   background-color: #45a049;
 }
-
-#editFormContainer {
-  display: none;
-}
