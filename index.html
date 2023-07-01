@@ -5,30 +5,32 @@
     <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>
   <body>
-    <h1>Shopping List</h1>
+      <div class="container">
+          <h1>Shopping List</h1>
 
-    <form id="form" class="form-sanpham cangiua">
-    <form id="form" cla>
-      <input
-        type="text"
-        id="productInput"
-        placeholder="Tên sản phẩm"
-        autocomplete="off"
-        required
-        class="font-size20"
-      />
-      <input type="number" 
-        id="priceInput" 
-        placeholder="Tiền" 
-        required
-        class="font-size20"
-      />
-      <button type="submit" class="font-size20">Thêm</button>
-    </form>
+          <form id="form">
+              <div class="form-row">
+                  <input type="text" id="productInput" placeholder="Tên sản phẩm" autocomplete="off" required
+                         class="font-size20" />
+                  <input type="number" id="priceInput" placeholder="Tiền" required class="font-size20" />
+                  <button type="submit" class="font-size20">Thêm</button>
+              </div>
+          </form>
 
-    <ul id="list" class="cangiua"></ul>
+          <ul id="list"></ul>
 
-    <p id="totalPrice">Tổng tiền: $0</p>
+          <p id="totalPrice" class="total-price">
+              <span class="total-price-label">Tổng tiền:</span>
+              <span class="total-price-amount">$0</span>
+          </p>
+
+          <div class="delete-all-container">
+              <button id="deleteAllButton" class="delete-all-button">
+                  <span class="delete-all-text">Xoá tất cả</span>
+                  <i class="delete-all-icon">&#128465;</i>
+              </button>
+          </div>
+      </div>
 
     <script src="script.js"></script>
   </body>
