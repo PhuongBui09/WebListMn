@@ -11,6 +11,8 @@ function deleteItem(index) {
 
   if (deletedItem.product === "Đang nợ") {
     debtAmount -= deletedItem.price;
+  } else {
+    totalPrice -= deletedItem.price;
   }
 
   shoppingList.splice(index, 1);
@@ -21,6 +23,7 @@ function deleteItem(index) {
 function deleteAll() {
   shoppingList.length = 0;
   debtAmount = 0;
+  totalPrice = 0;
   renderList();
 }
 
@@ -30,49 +33,78 @@ function renderList() {
   list.innerHTML = "";
 
   let totalPrice = 0;
-  let debtAmount = 0;
 
-  shoppingList.forEach((item, index) => {
-    const li = document.createElement("li");
-    const productText = document.createElement("span");
-    const productName = item.product.trim(); // Loại bỏ khoảng trắng ở đầu và cuối chuỗi
-    productText.textContent = productName;
-    if (productName === "Đang nợ") {
-      productText.style.fontWeight = "bold";
-    }
-    li.appendChild(productText);
+  // Create an object to store products grouped by date
+  const productsByDate = {};
 
-    const priceText = document.createElement("span");
-    const price = item.price.toLocaleString("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    });
-    priceText.textContent = ` - ${price}`;
-    li.appendChild(priceText);
+  shoppingList.forEach((item) => {
+    const { product, price, date } = item;
 
-    if (productName === "Đang nợ") {
-      // Kiểm tra nếu "Đang nợ" đã tồn tại trong danh sách
-      if (debtAmount !== 0) {
-        // Nếu đã tồn tại, cộng số tiền đang nợ hiện tại với số tiền mới
-        debtAmount += item.price;
-      } else {
-        // Nếu chưa tồn tại, gán số tiền đang nợ
-        debtAmount = item.price;
-      }
+    // Format date to "Ngày DD/MM/YYYY"
+    const formattedDate = new Date(date).toLocaleDateString("vi-VN");
+
+    // Group products by date
+    if (productsByDate[formattedDate]) {
+      productsByDate[formattedDate].push({ product, price });
     } else {
-      totalPrice += item.price;
+      productsByDate[formattedDate] = [{ product, price }];
     }
 
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Xoá";
-    deleteButton.addEventListener("click", () => {
-      deleteItem(index);
-    });
-    li.appendChild(deleteButton);
-
-    list.appendChild(li);
+    if (product !== "Đang nợ") {
+      totalPrice += price;
+    }
   });
 
+  // Loop through products grouped by date and display them on the page
+  for (const date in productsByDate) {
+    const productList = productsByDate[date];
+
+    const dateHeader = document.createElement("h3");
+    dateHeader.textContent = date;
+    list.appendChild(dateHeader);
+
+    productList.forEach((item) => {
+      const li = document.createElement("li");
+      const productText = document.createElement("span");
+      const productName = item.product.trim();
+      productText.textContent = productName;
+      if (productName === "Đang nợ") {
+        productText.classList.add("product-class");
+      } else {
+        productText.classList.add("product-class-all");
+      }
+      li.appendChild(productText);
+
+      const priceText = document.createElement("span");
+      const price = item.price.toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
+      priceText.textContent = ` + ${price}`;
+      li.appendChild(priceText);
+
+      if (productName === "Đang nợ") {
+        // Check if "Đang nợ" already exists in the list
+        if (debtAmount !== 0) {
+          // If it exists, add the current debt amount to the new amount
+          debtAmount += item.price;
+        } else {
+          // If it doesn't exist, set the debt amount
+          debtAmount = item.price;
+        }
+      }
+
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "Xoá";
+      deleteButton.classList.add("delete-button");
+      deleteButton.addEventListener("click", () => {
+        deleteItem(index);
+      });
+      li.appendChild(deleteButton);
+
+      list.appendChild(li);
+    });
+  }
 
   const totalPriceElement = document.getElementById("totalPrice");
   const totalAmount = totalPrice - debtAmount;
@@ -86,14 +118,12 @@ function renderList() {
 }
 
 // Handle delete all button click
-const deleteAllButton = document.createElement("button");
-deleteAllButton.textContent = "Xoá tất cả";
+const deleteAllButton = document.getElementById("deleteAllButton");
 deleteAllButton.addEventListener("click", () => {
-  if (confirm("Bạn có chắc muốn xoá tất cả ?")) {
+  if (confirm("Bạn có chắc muốn xoá tất cả?")) {
     deleteAll();
   }
 });
-document.body.appendChild(deleteAllButton);
 
 // Handle form submission
 const form = document.getElementById("form");
@@ -112,7 +142,8 @@ form.addEventListener("submit", (event) => {
       debtAmount += price;
     }
 
-    shoppingList.push({ product, price });
+    const currentDate = new Date().toISOString().slice(0, 10);
+    shoppingList.push({ product, price, date: currentDate });
 
     productInput.value = "";
     priceInput.value = "";

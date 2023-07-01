@@ -1,14 +1,19 @@
 body {
   font-family: Arial, sans-serif;
   margin: 20px;
+  background-color: #f2f2f2;
 }
 
 h1 {
   text-align: center;
+  color: #333;
 }
 
 form {
   margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 ul {
@@ -17,41 +22,130 @@ ul {
 }
 
 li {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
 }
 
-#totalPrice {
-  font-weight: bold;
-}
-
-.cangiua {
-  text-align: center;
-}
-
-.form-sanpham {
-  
+.container {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .font-size20 {
   font-size: 20px;
+  margin: 0 3px;
 }
 
 .product-class {
   color: red;
-  /* margin-right: 41%;
-  padding: 2px 30px;
-  border: 1px solid; */
+}
+
+.product-class-all {
+  color: #333;
 }
 
 .price-class {
   color: blue;
-  /* margin-right: 9%;
-  padding: 2px 30px;
-  border: 1px solid; */
 }
 
-.li-render-addproduct {
-  border: 1px solid;
-  width: 40%;
-  margin-left: 30%;
+.delete-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #ff0000;
+}
+
+.delete-all-button {
+  background-color: #ff9999;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.delete-all-button:hover {
+  background-color: #ff6666;
+}
+
+.total-price {
+  font-size: 18px;
+  text-align: right;
+  margin-top: 20px;
+}
+
+.total-price-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.total-price-amount {
+  color: #009900;
+}
+
+.delete-all-container {
+  text-align: center;
+}
+
+.delete-all-text {
+  color: black;
+  font-size: 14px;
+  font-weight: 550;
+}
+
+.delete-all-button:hover .delete-all-text {
+  color: #fff;
+}
+
+.delete-all-icon {
+  font-size: 30px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+#list {
+  text-align: center;
+}
+
+.form-row {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.form-row input {
+  flex: 1;
+  margin-right: 5px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.form-row button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.form-row button:hover {
+  background-color: #45a049;
 }
